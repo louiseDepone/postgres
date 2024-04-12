@@ -1,6 +1,6 @@
 
-import { Pool } from "pg";
 
+const Pool = require("pg").Pool;
 const db = new Pool({
   host: process.env.HOST,
   user: process.env.USER,
@@ -28,4 +28,4 @@ process.on("exit", () => {
 });
 
 
-export default { db };  
+module.exports = { db };
