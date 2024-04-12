@@ -1,0 +1,7 @@
+# [START app_yaml]
+
+runtime: nodejs18
+
+service: default
+
+# [END app_yaml]
