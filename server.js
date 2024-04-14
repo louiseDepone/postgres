@@ -8,10 +8,10 @@ const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const express = require("express");
+const express = require("express"); 
 
 const app = express();
-const PORT = 3200;
+const PORT = process.env.PORT;
 const HOST = process.env.HOST;
  
 const  {
