@@ -13,19 +13,19 @@ const db = new Pool({
 });
 
 
-// db.connect((err) => {
-//   if (err) {
-//     console.error("Error connecting to PostgreSQL", err);
-//   } else {
-//     console.log("PostgreSQL connected successfully");
+db.connect((err) => {
+  if (err) {
+    console.error("Error connecting to PostgreSQL", err);
+  } else {
+    console.log("PostgreSQL connected successfully");
 
-//   }
-// });
+  }
+});
 
 
-// process.on("exit", () => {
-//   db.end();
-// });
+process.on("exit", () => {
+  db.end();
+});
 
 
 module.exports = { db };
