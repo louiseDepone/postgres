@@ -44,7 +44,7 @@ const enrollmentController = {
         }
         console.log("ohmyyyy", result)
         return res.status(200).json(result.rows);
-      });
+      }); 
     },
 
     multipleEnrollementDependingOnTheTeacherSubjectId(req, res) {

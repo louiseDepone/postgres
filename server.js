@@ -11,14 +11,14 @@ const cors = require("cors");
 const express = require("express"); 
 
 const app = express();
-const PORT = process.env.PORT;
+const PORT = 3200;
 const HOST = process.env.HOST;
  
 const  {
   S3Client,
   PutObjectCommand,
   CreateBucketCommand,
-  DeleteObjectCommand,
+  DeleteObjectCommand, 
   DeleteBucketCommand,
   paginateListObjectsV2,
   GetObjectCommand,
@@ -52,7 +52,7 @@ app.get("/singePost", async (req, res) => {
   //patrick.png
   
   try{
-  const key ="Official_Registration_Form.pdf"
+  const key = "2e561454-1fc7-4303-87f6-1636bfe573f5";
     const params = {
       Bucket: proBUCKET_NAME,
       Key: key,
@@ -61,6 +61,7 @@ app.get("/singePost", async (req, res) => {
     const seconds = 60;
     const url = await getSignedUrl(S3, command, { expiresIn: seconds });
     console.log(url)
+  
     return res.send(url)
   }
   catch(err){
@@ -111,6 +112,7 @@ const subjectRoute = require("./routes/subjectRoute");
 const teacherRoute = require("./routes/teacherRoute");
 const teacherSubjectRoute = require("./routes/teacherSubjectRoute");
 const pinpostRoute = require("./routes/pinpostRoute");
+const matriculationRoute = require("./routes/matriculationRoute");
 
 
 app.use("/", 
@@ -122,7 +124,8 @@ ratingRoute,
  subjectRoute,
   teacherRoute, 
   teacherSubjectRoute, 
-  pinpostRoute
+  pinpostRoute,
+  matriculationRoute
 
 );
 

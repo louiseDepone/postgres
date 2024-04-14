@@ -88,76 +88,91 @@ const studentController = {
   Post: {
     async singleStudent(req, res) {},
     registerStudent(req, res) {
+      console.log("registering student");
       let continueRegister = false;
       let { name, email, password, student_id, role } = req.body;
 
       if (!name || !email || !password || !student_id) {
-      return res.status(400).json({ message: "All fields are required" });
+        return res.status(400).json({ message: "All fields are required" });
       }
       const hashedPassword = bcrypt.hashSync(password, 10);
 
       const querys = `SELECT * FROM students WHERE email = $1`;
 
-      db.query(querys, [email], (err, result) => {
-      if (err) {
-        return res.status(500).json({
-        message: "Internal Server Error",
-        err,
-        });
-      } else {
-        if (result.rows.length > 0) {
-        continueRegister = false;
-        return res
-          .status(409)
-          .json({ message: "Student Email Already in use" });
-        } else {
-        continueRegister = true;
-        }
-      }
-      });
-
-      const queryss = `SELECT * FROM students WHERE student_id = $1`;
-
-      db.query(queryss, [student_id], (err, result) => {
-      if (err) {
-        return res.status(500).json({
-        message: "Internal Server Error",
-        err,
-        });
-      } else {
-        if (result.rows.length > 0) {
-        continueRegister = false;
-        return res
-          .status(409)
-          .json({ message: "Student ID Already in use" });
-        } else {
-        continueRegister = true;
-        }
-      }
-      });
-
-      if (continueRegister) {
-      console.log(continueRegister);
-      const query = `INSERT INTO students (name, email, password, role, student_id) VALUES ($1, $2, $3, $4, $5)`;
-      if (!role) {
-        role = "student";
-      }
-      db.query(
-        query,
-        [name, email, hashedPassword, role, student_id],
-        (err, result) => {
+      db.query(querys, [email], async (err, result) => {
+        console.log("checking email");
         if (err) {
+          console.log(err);
           return res.status(500).json({
-          message: "Internal Server Error",
-          err,
+            message: "Internal Server Error",
+            err,
           });
         } else {
-          return res.status(201).json({ message: "Student Registered" });
+          if (result.rows.length > 0) {
+            continueRegister = false;
+            console.log("have email");
+            return res
+              .status(409)
+              .json({ message: "Student Email Already in use" });
+          } else {
+            const queryss = `SELECT * FROM students WHERE student_id = $1`;
+
+            db.query(queryss, [student_id], async (err, result) => {
+              console.log("checking student_id");
+              if (err) {
+                return res.status(500).json({
+                  message: "Internal Server Error",
+                  err,
+                });
+              } else {
+                if (result.rows.length > 0) {
+                  continueRegister = false;
+                  console.log("have sdent id");
+                  return res
+                    .status(409)
+                    .json({ message: "Student ID Already in use" });
+                } else {
+                  console.log("continueRegister");
+                  console.log(continueRegister);
+                  const query = `INSERT INTO students (name, email, password, role, student_id) VALUES ($1, $2, $3, $4, $5)`;
+                  if (!role) {
+                    role = "student";
+                  }
+                  try {
+                    db.query(
+                      query,
+                      [name, email, hashedPassword, role, student_id],
+                      async (err, result) => {
+                        try {
+                          if (err) {
+                            return res.status(500).json({
+                              message: "Internal Server Error",
+                              err,
+                            });
+                          } else {
+                            return res
+                              .status(201)
+                              .json({ message: "Student Registered" });
+                          }
+                        } catch (error) {
+                          console.log(error);
+                        }
+                      }
+                    );
+                  } catch (error) {
+                    console.log(error);
+                  }
+                }
+              }
+            });
+          }
         }
-        }
-      );
-      }
-      return;
+      });
+
+      // if (continueRegister) {
+      // } else {
+      //   console.log("cancel!", continueRegister);
+      // }
     },
     async multipleStudent(req, res) {},
     async loginStudent(req, res) {
@@ -166,6 +181,7 @@ const studentController = {
       console.log(req.body);
       const query = `SELECT * FROM students WHERE email = $1`;
       db.query(query, [email], (err, result) => {
+        
         if (err) {
           res.status(500).json({ message: "Server Error" });
         } else {
