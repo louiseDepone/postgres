@@ -5,7 +5,7 @@ const { authenticateToken } = require("../middlewares/authMiddleware");
 const subjectController = require("../controllers/subjectController");
 
 
-router.get("/subjects", authenticateToken, subjectController.Get.multipleSubject);
+router.get("/subjects", subjectController.Get.multipleSubject);
 router.get("/subjects/:id", authenticateToken, subjectController.Get.singleSubject);
 router.get(
   "/multipleSubjectOfACertainUser/:id",

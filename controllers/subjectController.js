@@ -15,7 +15,7 @@ const subjectController = {
     singleSubject(req, res) { console.log("singleSubject GET")
       const id = req.params.id;
       db.query("SELECT * FROM subjects WHERE subject_id = $1", [subject_id], (err, result) => {
-        if (err) {
+        if (err) { 
           res.status(500).send(err);
           console.log(err);
         } else {

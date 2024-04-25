@@ -12,6 +12,7 @@ const express = require("express");
 
 const app = express();
 const PORT = process.env.PORT;
+// const PORT = 3200;
 const HOST = process.env.HOST;
  
 const  {
@@ -113,6 +114,7 @@ const teacherRoute = require("./routes/teacherRoute");
 const teacherSubjectRoute = require("./routes/teacherSubjectRoute");
 const pinpostRoute = require("./routes/pinpostRoute");
 const matriculationRoute = require("./routes/matriculationRoute");
+const publicEndpointsRoute = require("./routes/publicEndpointsRoute");
 
 
 app.use("/", 
@@ -125,7 +127,8 @@ ratingRoute,
   teacherRoute, 
   teacherSubjectRoute, 
   pinpostRoute,
-  matriculationRoute
+  matriculationRoute,
+  publicEndpointsRoute
 
 );
 
