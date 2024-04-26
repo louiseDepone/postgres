@@ -58,7 +58,10 @@ const studentController = {
       const student_id = req.params.id;
       console.log(req.params.id);
       const { name, email, password } = req.body;
-      const hashedPassword = password;
+      // const hashedPassword = password;
+      // hashung the password
+      const hashedPassword = bcrypt.hashSync(password, 10);
+      
       const query = `UPDATE students SET name = $1, email = $2, password = $3 WHERE student_id = $4`;
       db.query(
         query,
@@ -71,8 +74,6 @@ const studentController = {
             } else {
               if (result.rows.affectedRows > 0) {
                 res.status(200).json({ message: "Student Updated" });
-              } else {
-                res.status(404).json({ message: "Student Not Found", result });
               }
             }
           } catch (error) {
